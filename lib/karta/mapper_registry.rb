@@ -1,4 +1,6 @@
+# frozen_string_literal: true
 module Karta
+  # Simple collection class for mappers
   class MapperRegistry
     attr_reader :mappers
 
@@ -11,18 +13,16 @@ module Karta
         from_klass, to_klass = *klasses_from_class_name(mapper)
       end
 
-      mappers.push({
-        mapper: mapper,
-        from_klass: from_klass,
-        to_klass: to_klass
-      })
+      mappers.push(mapper: mapper,
+                   from_klass: from_klass,
+                   to_klass: to_klass)
     end
 
     def find(from_klass:, to_klass:)
-      mappers.find(-> {
+      mappers.find(lambda do
         raise MapperNotFoundError.new(from_klass, to_klass)
-      }) do |mapper|
-          mapper[:from_klass] == from_klass && mapper[:to_klass] == to_klass
+      end) do |mapper|
+        mapper[:from_klass] == from_klass && mapper[:to_klass] == to_klass
       end.fetch(:mapper)
     end
 
@@ -33,7 +33,7 @@ module Karta
 
       klass_name.to_s
                 .gsub('Mapper', '')
-                .split("To")
+                .split('To')
                 .map(&:constantize)
     end
   end

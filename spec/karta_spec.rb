@@ -1,9 +1,8 @@
+# frozen_string_literal: true
 require 'spec_helper'
 
 describe Karta do
-
   describe '.mapper_registry' do
-
     context 'when a mapper registry has already been initialized' do
       let(:mapper_registry) { double('mapper_registry') }
 
@@ -16,8 +15,11 @@ describe Karta do
     context 'when no mapper registry has been initialized' do
       it 'initializes the mapper registry to an empty array' do
         expect(Karta.instance_variable_get('@mapper_registry')).to be_nil
+
         Karta.mapper_registry
-        expect(Karta.instance_variable_get('@mapper_registry')).to be_a Karta::MapperRegistry
+
+        expect(Karta.instance_variable_get('@mapper_registry')).to \
+          be_a Karta::MapperRegistry
       end
     end
   end
@@ -41,7 +43,6 @@ describe Karta do
   end
 
   describe '.map' do
-
     context 'when trying to map from a class' do
       let(:foo) { double('foo') }
 
@@ -50,9 +51,9 @@ describe Karta do
       end
 
       it 'raises an ArgumentError' do
-        expect{
+        expect do
           Karta.map(from: Bar, to: foo)
-        }.to raise_error(ArgumentError, "cannot map from a class")
+        end.to raise_error(ArgumentError, 'cannot map from a class')
       end
     end
 

@@ -1,18 +1,11 @@
+# frozen_string_literal: true
 module DefineConstantMacros
   def define_klass(name:, attrs: [], &block)
-    klass = Class.new(Object)
+    klass = Class.new(DynamicClass)
     Object.const_set(name, klass)
 
     klass.class_eval do
-      attrs.each do |attr|
-        attr_accessor attr
-      end
-
-      def initialize(data = {})
-        data.each do |attr, val|
-          instance_variable_set("@#{attr}", val)
-        end
-      end
+      attrs.each { |attr| attr_accessor attr }
     end
 
     klass.class_eval(&block) if block_given?
@@ -45,6 +38,12 @@ module DefineConstantMacros
     end
 
     @defined_constants.clear
+  end
+
+  class DynamicClass
+    def initialize(data = {})
+      data.each { |attr, val| instance_variable_set("@#{attr}", val) }
+    end
   end
 
   RSpec.configure do |config|
