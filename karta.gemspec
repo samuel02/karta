@@ -11,7 +11,6 @@ Gem::Specification.new do |spec|
   spec.email         = ['mail@samuelnilsson.me']
   spec.summary       = 'A simple Ruby gem for creating mappers which map one '\
                        'object to another.'
-  spec.description   = 'Write a longer description. Optional.'
   spec.homepage      = ''
   spec.license       = 'MIT'
 
