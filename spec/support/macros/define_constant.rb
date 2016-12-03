@@ -1,7 +1,13 @@
 # frozen_string_literal: true
 module DefineConstantMacros
-  def define_klass(name:, attrs: [], &block)
-    klass = Class.new(DynamicClass)
+  class DynamicClass
+    def initialize(data = {})
+      data.each { |attr, val| instance_variable_set("@#{attr}", val) }
+    end
+  end
+
+  def define_klass(name, attrs: [], inherit_from: DynamicClass, &block)
+    klass = Class.new(inherit_from)
     Object.const_set(name, klass)
 
     klass.class_eval do
@@ -14,20 +20,6 @@ module DefineConstantMacros
     klass
   end
 
-  def define_mapper(name:, one_to_one_mappings: [], mappings: [])
-    define_klass name: name do
-      include Karta::Mapper
-
-      one_to_one_mappings.each do |attr|
-        one_to_one_mapping attr
-      end
-
-      mappings.each do |mapping_method, proc|
-        define_method "map_#{mapping_method}", proc
-      end
-    end
-  end
-
   def default_constants
     @defined_constants ||= []
   end
@@ -38,12 +30,6 @@ module DefineConstantMacros
     end
 
     @defined_constants.clear
-  end
-
-  class DynamicClass
-    def initialize(data = {})
-      data.each { |attr, val| instance_variable_set("@#{attr}", val) }
-    end
   end
 
   RSpec.configure do |config|

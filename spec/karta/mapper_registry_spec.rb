@@ -8,9 +8,9 @@ describe Karta::MapperRegistry do
     context 'when from_klass or to_klass are not specified' do
       context 'when the class name of the mapper follows the correct format' do
         before do
-          define_klass(name: 'Foo')
-          define_klass(name: 'Bar')
-          define_mapper(name: 'FooToBarMapper')
+          define_klass 'Foo'
+          define_klass 'Bar'
+          define_klass 'FooToBarMapper', inherit_from: Karta::Mapper
         end
 
         it 'parses the class names from the mapper name and adds the mapper' do
@@ -28,7 +28,7 @@ describe Karta::MapperRegistry do
 
       context "when the class name of the mapper isn't on the correct format" do
         before do
-          define_mapper(name: 'CustomMapper')
+          define_klass 'CustomMapper', inherit_from: Karta::Mapper
         end
 
         it 'raises an error' do
@@ -42,9 +42,9 @@ describe Karta::MapperRegistry do
 
     context 'when from_klass and to_klass are specified' do
       before do
-        define_klass(name: 'Foo')
-        define_klass(name: 'Bar')
-        define_mapper(name: 'CustomMapper')
+        define_klass 'Foo'
+        define_klass 'Bar'
+        define_klass 'CustomMapper', inherit_from: Karta::Mapper
       end
 
       it 'adds the mapper to the registry' do
@@ -68,9 +68,9 @@ describe Karta::MapperRegistry do
 
     context 'when an appropriate mapper exists' do
       before do
-        define_klass(name: 'Foo')
-        define_klass(name: 'Bar')
-        define_mapper(name: 'FooToBarMapper')
+        define_klass 'Foo'
+        define_klass 'Bar'
+        define_klass 'FooToBarMapper', inherit_from: Karta::Mapper
 
         allow(mapper_registry).to\
           receive(:mappers).and_return([{

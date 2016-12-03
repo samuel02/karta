@@ -21,13 +21,11 @@ Or install it yourself as:
 ## Usage
 
 ### Setting up a mapper
-The main functionality of Karta is used by letting a class extend `Karta::Mapper`. By doing so the class gets `#map` method which will run all methods starting with `map_` on all objects.
+The main functionality of Karta is used by letting a class inherit from `Karta::Mapper`. By doing so the class gets a `#map` method which will run all methods starting with `map_` with the two objects as arguments.
 
 ##### Example
 ```ruby
-class MyTwitterMapper
-  extend Karta::Mapper
-
+class MyTwitterMapper < Karta::Mapper
   def map_email(twitter_user, user)
     user.email = twitter_user.twitter_email
   end
@@ -59,8 +57,7 @@ To simplify cases when an application has several mappers it is possible to regi
 ##### Example
 
 ```ruby
-class MyMapper
-  extend Karta::Mapper
+class MyMapper < Karta::Mapper
   # map methods...
 end
 
@@ -70,8 +67,7 @@ Karta.register_mapper MyMapper, from_klass: Twitter::User, to_klass: User
 # when registering the mapper. This relies on reflection and
 # requires the mapper to have a class name on the correct format
 # (`[from class]To[to class]Mapper`) for example `FooToBarMapper`.
-class FooToBarMapper
-  extend Karta::Mapper
+class FooToBarMapper < Karta::Mapper
   # map methods
 end
 
@@ -92,8 +88,7 @@ Sometimes you have fields that could be mapped directly without performing any t
 ##### Example
 
 ```ruby
-class FooToBarMapper
-  extend Karta::Mapper
+class FooToBarMapper < Karta::Mapper
   one_to_one_mapping :email
 end
 

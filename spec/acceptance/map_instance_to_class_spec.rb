@@ -3,14 +3,16 @@ require 'spec_helper'
 
 describe 'mapping from one instance to a class' do
   before do
-    define_klass name: 'Foo', attrs: [:id, :foo_name]
-    define_klass name: 'Bar', attrs: [:id, :name]
+    define_klass 'Foo', attrs: [:id, :foo_name]
+    define_klass 'Bar', attrs: [:id, :name]
 
-    define_mapper name: 'FooToBarMapper',
-                  one_to_one_mappings: [:id],
-                  mappings: {
-                    name: ->(foo, bar) { bar.name = foo.foo_name }
-                  }
+    define_klass 'FooToBarMapper', inherit_from: Karta::Mapper do
+      one_to_one_mapping :id
+
+      def map_name(foo, bar)
+        bar.name = foo.foo_name
+      end
+    end
   end
 
   let(:foo) { Foo.new(id: 1, foo_name: 'Foo') }

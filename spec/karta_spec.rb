@@ -47,7 +47,7 @@ describe Karta do
       let(:foo) { double('foo') }
 
       before do
-        define_klass(name: 'Bar')
+        define_klass 'Bar'
       end
 
       it 'raises an ArgumentError' do
@@ -63,7 +63,7 @@ describe Karta do
       let(:bar)             { double('bar') }
 
       before do
-        define_klass(name: 'Foo')
+        define_klass 'Foo'
         allow(Karta).to receive(:mapper_registry).and_return(mapper_registry)
       end
 
