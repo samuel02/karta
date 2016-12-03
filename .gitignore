@@ -13,4 +13,4 @@
 *.a
 mkmf.log
 /ideas/
-/.byebug_history/
+.byebug_history
