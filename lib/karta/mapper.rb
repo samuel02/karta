@@ -20,7 +20,6 @@ module Karta
     def mapping_methods
       self.class.public_instance_methods(true)
           .grep(/^map_/)
-          .map(&:to_s)
     end
 
     # The class methods will be extended to the class
