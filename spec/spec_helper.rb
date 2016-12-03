@@ -2,6 +2,9 @@
 $LOAD_PATH << File.join(File.dirname(__FILE__), '..', 'lib')
 $LOAD_PATH << File.join(File.dirname(__FILE__))
 
+require 'simplecov'
+SimpleCov.start
+
 require 'rubygems'
 require 'rspec'
 require 'byebug'
