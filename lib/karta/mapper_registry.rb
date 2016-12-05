@@ -34,7 +34,7 @@ module Karta
       klass_name.to_s
                 .gsub('Mapper', '')
                 .split('To')
-                .map(&:constantize)
+                .map(&Kernel.method(:const_get))
     end
   end
 end

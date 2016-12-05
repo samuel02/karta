@@ -1,6 +1,4 @@
 # frozen_string_literal: true
-require 'active_support/inflector'
-
 module Karta
   # Contains the basic functionality for a mapper object,
   # the class is meant to be inherited by a mapper class
