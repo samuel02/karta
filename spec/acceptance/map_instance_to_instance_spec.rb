@@ -6,7 +6,7 @@ describe 'mapping from one instance to another' do
     define_klass 'Foo', attrs: [:id, :foo_name]
     define_klass 'Bar', attrs: [:id, :name]
 
-    define_klass 'FooToBarMapper', inherit_from: Karta::Mapper do
+    define_klass 'FooToBarMapper', base: Karta::Mapper do
       one_to_one_mapping :id
 
       def map_name(foo, bar)

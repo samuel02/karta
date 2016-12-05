@@ -10,7 +10,7 @@ describe Karta::MapperRegistry do
         before do
           define_klass 'Foo'
           define_klass 'Bar'
-          define_klass 'FooToBarMapper', inherit_from: Karta::Mapper
+          define_klass 'FooToBarMapper', base: Karta::Mapper
         end
 
         it 'parses the class names from the mapper name and adds the mapper' do
@@ -26,9 +26,30 @@ describe Karta::MapperRegistry do
         end
       end
 
+      context 'when the class name of the mapper contains a namespaced class' do
+        before do
+          define_klass 'Baz'
+          define_klass 'Baz::Foo'
+          define_klass 'Bar'
+          define_klass 'Baz::FooToBarMapper', base: Karta::Mapper
+        end
+
+        it 'parses the class names from the mapper name and adds the mapper' do
+          mapper_registry.register(mapper: Baz::FooToBarMapper)
+
+          expect(mapper_registry.mappers.count).to eq 1
+
+          mapper = mapper_registry.mappers.first
+
+          expect(mapper[:mapper]).to     eq Baz::FooToBarMapper
+          expect(mapper[:from_klass]).to eq Baz::Foo
+          expect(mapper[:to_klass]).to   eq Bar
+        end
+      end
+
       context "when the class name of the mapper isn't on the correct format" do
         before do
-          define_klass 'CustomMapper', inherit_from: Karta::Mapper
+          define_klass 'CustomMapper', base: Karta::Mapper
         end
 
         it 'raises an error' do
@@ -44,7 +65,7 @@ describe Karta::MapperRegistry do
       before do
         define_klass 'Foo'
         define_klass 'Bar'
-        define_klass 'CustomMapper', inherit_from: Karta::Mapper
+        define_klass 'CustomMapper', base: Karta::Mapper
       end
 
       it 'adds the mapper to the registry' do
@@ -70,7 +91,7 @@ describe Karta::MapperRegistry do
       before do
         define_klass 'Foo'
         define_klass 'Bar'
-        define_klass 'FooToBarMapper', inherit_from: Karta::Mapper
+        define_klass 'FooToBarMapper', base: Karta::Mapper
 
         allow(mapper_registry).to\
           receive(:mappers).and_return([{

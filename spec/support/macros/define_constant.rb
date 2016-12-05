@@ -6,9 +6,10 @@ module DefineConstantMacros
     end
   end
 
-  def define_klass(name, attrs: [], inherit_from: DynamicClass, &block)
-    klass = Class.new(inherit_from)
-    Object.const_set(name, klass)
+  def define_klass(path, attrs: [], base: DynamicClass, &block)
+    namespace, class_name = *constant_path(path)
+    klass = Class.new(base)
+    namespace.const_set(class_name, klass)
 
     klass.class_eval do
       attrs.each { |attr| attr_accessor attr }
@@ -16,8 +17,15 @@ module DefineConstantMacros
 
     klass.class_eval(&block) if block_given?
 
-    @defined_constants << name
+    @defined_constants << path
     klass
+  end
+
+  def constant_path(constant_name)
+    names = constant_name.split('::')
+    class_name = names.pop
+    namespace = names.inject(Object) { |result, name| result.const_get(name) }
+    [namespace, class_name]
   end
 
   def default_constants
@@ -25,8 +33,9 @@ module DefineConstantMacros
   end
 
   def clear_generated_constants
-    @defined_constants.reverse.each do |name|
-      Object.send(:remove_const, name)
+    @defined_constants.reverse.each do |path|
+      namespace, class_name = *constant_path(path)
+      namespace.send(:remove_const, class_name)
     end
 
     @defined_constants.clear

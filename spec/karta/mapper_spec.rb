@@ -10,7 +10,7 @@ describe Karta::Mapper do
     end
 
     let!(:mapper) do
-      define_klass('MyMapper', inherit_from: Karta::Mapper).new
+      define_klass('MyMapper', base: Karta::Mapper).new
     end
 
     before do
@@ -41,7 +41,7 @@ describe Karta::Mapper do
 
   describe '#mapping_methods' do
     let(:mapper_klass) do
-      define_klass 'MyMapper', inherit_from: Karta::Mapper do
+      define_klass 'MyMapper', base: Karta::Mapper do
         def map_foo; end
         def bar; end
         private
@@ -64,7 +64,7 @@ describe Karta::Mapper do
 
   describe '.one_to_one_mapping' do
     let(:mapper) do
-      define_klass 'Foo', inherit_from: Karta::Mapper do
+      define_klass 'Foo', base: Karta::Mapper do
         one_to_one_mapping :foo
       end.new
     end
@@ -79,7 +79,7 @@ describe Karta::Mapper do
     let(:from)   { double('from') }
     let(:to)     { double('to') }
 
-    let(:mapper_klass) { define_klass 'Mapper', inherit_from: Karta::Mapper }
+    let(:mapper_klass) { define_klass 'Mapper', base: Karta::Mapper }
 
     it 'instantiates self and runs the map method on the instance' do
       expect(mapper_klass).to receive(:new).and_return(mapper)
