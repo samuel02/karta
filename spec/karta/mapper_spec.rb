@@ -21,8 +21,8 @@ describe Karta::Mapper do
       let(:from) { Foo.new }
       let(:to)   { Bar.new }
 
-      it 'calls all mapping methods with from and to' do
-        expect(mapper).to receive(:send).with(:method, from, to)
+      it 'calls all mapping methods with from and to and returns new instance' do
+        expect(mapper).to receive(:send).with(:method, from, Bar)
         mapper.map(from: from, to: to)
       end
     end
@@ -35,6 +35,42 @@ describe Karta::Mapper do
         expect(mapper).to receive(:send).with(:method, from, to)
 
         mapper.map(from: from, to: to)
+      end
+    end
+  end
+
+  describe '#map!' do
+    before do
+      define_klass 'Foo'
+      define_klass 'Bar'
+    end
+
+    let!(:mapper) do
+      define_klass('MyMapper', base: Karta::Mapper).new
+    end
+
+    before do
+      allow(MyMapper).to receive(:mapping_methods).and_return([:method])
+    end
+
+    context 'when to is an instance' do
+      let(:from) { Foo.new }
+      let(:to)   { Bar.new }
+
+      it 'calls all mapping methods with from and to and modifies to in place' do
+        expect(mapper).to receive(:send).with(:method, from, to)
+        mapper.map!(from: from, to: to)
+      end
+    end
+
+    context 'when to is a class' do
+      let(:from) { Foo.new }
+      let(:to)   { Bar }
+
+      it 'calls all mapping methods with from and a to instance' do
+        expect(mapper).to receive(:send).with(:method, from, to)
+
+        mapper.map!(from: from, to: to)
       end
     end
   end

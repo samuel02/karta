@@ -85,11 +85,69 @@ describe Karta do
         allow(Karta).to receive(:mapper_registry).and_return(mapper_registry)
       end
 
-      it 'performs the mapping and returns the mapped instance' do
+      it 'performs the mapping and returns a new instance' do
         expect(mapper_registry).to receive(:find).and_return(mapper)
         expect(mapper).to receive(:map).with(from: bar, to: foo)
+                                       .and_return(double('new-foo'))
 
-        Karta.map(from: bar, to: foo)
+        result = Karta.map(from: bar, to: foo)
+
+        expect(result).to_not eq foo
+      end
+    end
+  end
+
+  describe '.map!' do
+    context 'when trying to map from a class' do
+      let(:foo) { double('foo') }
+
+      before do
+        define_klass 'Bar'
+      end
+
+      it 'raises an ArgumentError' do
+        expect do
+          Karta.map!(from: Bar, to: foo)
+        end.to raise_error(ArgumentError, 'cannot map from a class')
+      end
+    end
+
+    context 'when mapping to a class' do
+      let(:mapper)          { double('mapper') }
+      let(:mapper_registry) { double('mapper_registry') }
+      let(:bar)             { double('bar') }
+
+      before do
+        define_klass 'Foo'
+        allow(Karta).to receive(:mapper_registry).and_return(mapper_registry)
+      end
+
+      it 'finds a a mapper and maps' do
+        expect(mapper_registry).to receive(:find).and_return(mapper)
+        expect(mapper).to receive(:map!).with(from: bar, to: Foo)
+
+        Karta.map!(from: bar, to: Foo)
+      end
+    end
+
+    context 'when mapping to an instance' do
+      let(:mapper)          { double('mapper') }
+      let(:mapper_registry) { double('mapper_registry') }
+      let(:bar)             { double('bar') }
+      let(:foo)             { double('foo') }
+
+      before do
+        allow(Karta).to receive(:mapper_registry).and_return(mapper_registry)
+      end
+
+      it 'performs the mapping and returns the instance' do
+        expect(mapper_registry).to receive(:find).and_return(mapper)
+        expect(mapper).to receive(:map!).with(from: bar, to: foo)
+                                        .and_return(foo)
+
+        result = Karta.map!(from: bar, to: foo)
+
+        expect(result).to eq foo
       end
     end
   end

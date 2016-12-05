@@ -19,12 +19,14 @@ describe 'mapping from one instance to another' do
   let(:bar) { Bar.new(id: 2, name: '') }
 
   describe 'using a mapper object' do
-    subject { FooToBarMapper.map(from: foo, to: bar) }
+    subject { FooToBarMapper.map!(from: foo, to: bar) }
 
     it 'maps all fields defined in the mapper' do
       expect(subject.class).to eq Bar
       expect(subject.id).to    eq foo.id
       expect(subject.name).to  eq foo.foo_name
+      expect(bar.id).to        eq 1
+      expect(bar.name).to      eq 'Foo'
     end
   end
 
@@ -33,7 +35,7 @@ describe 'mapping from one instance to another' do
       Karta.register_mapper FooToBarMapper
     end
 
-    subject { Karta.map(from: foo, to: bar) }
+    subject { Karta.map!(from: foo, to: bar) }
 
     it 'maps all fields defined in the mapper' do
       expect(subject.class).to eq Bar

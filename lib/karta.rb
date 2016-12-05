@@ -23,6 +23,13 @@ module Karta
                    .map(from: from, to: to)
   end
 
+  def self.map!(from:, to:)
+    to, to_klass, from, from_klass = *_handle_map_args(from, to)
+
+    mapper_registry.find(from_klass: from_klass, to_klass: to_klass)
+                   .map!(from: from, to: to)
+  end
+
   def self._handle_map_args(from, to)
     raise ArgumentError, 'cannot map from a class' if from.is_a?(Class)
     to_klass = to.is_a?(Class) ? to : to.class
