@@ -72,7 +72,7 @@ module Karta
     private
 
     def _map(from, to)
-      self.class.mapping_methods.each { |m| send(m, from, to) }
+      self.class.mapping_methods.each { |meth| send(meth, from, to) }
       to
     end
   end
