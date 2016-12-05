@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 module DefineConstantMacros
-  class DynamicClass
+  # Simple class used for making flexible objects
+  # in tests
+  class FlexibleObject
     def initialize(data = {})
       data.each { |attr, val| instance_variable_set("@#{attr}", val) }
     end
   end
 
-  def define_klass(path, attrs: [], base: DynamicClass, &block)
+  def define_klass(path, attrs: [], base: FlexibleObject, &block)
     namespace, class_name = *constant_path(path)
     klass = Class.new(base)
     namespace.const_set(class_name, klass)
