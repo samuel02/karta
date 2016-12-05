@@ -2,7 +2,6 @@
 require 'spec_helper'
 
 describe Karta::Mapper do
-
   describe '#map' do
     before do
       define_klass 'Foo'
@@ -21,7 +20,8 @@ describe Karta::Mapper do
       let(:from) { Foo.new }
       let(:to)   { Bar.new }
 
-      it 'calls all mapping methods with from and to and returns new instance' do
+      it 'calls all mapping methods with from and to \
+          and returns new instance' do
         expect(mapper).to receive(:send).with(:method, from, Bar)
         mapper.map(from: from, to: to)
       end
@@ -57,7 +57,8 @@ describe Karta::Mapper do
       let(:from) { Foo.new }
       let(:to)   { Bar.new }
 
-      it 'calls all mapping methods with from and to and modifies to in place' do
+      it 'calls all mapping methods with from and to \
+          and modifies to in place' do
         expect(mapper).to receive(:send).with(:method, from, to)
         mapper.map!(from: from, to: to)
       end
@@ -79,8 +80,11 @@ describe Karta::Mapper do
     let(:mapper_klass) do
       define_klass 'MyMapper', base: Karta::Mapper do
         def map_foo; end
+
         def bar; end
+
         private
+
         def map_baz; end
       end
     end

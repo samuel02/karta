@@ -24,7 +24,7 @@ module DefineConstantMacros
   def constant_path(constant_name)
     names = constant_name.split('::')
     class_name = names.pop
-    namespace = names.inject(Object) { |result, name| result.const_get(name) }
+    namespace = names.inject(Object) { |acc, elem| acc.const_get(elem) }
     [namespace, class_name]
   end
 

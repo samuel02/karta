@@ -88,7 +88,7 @@ describe Karta do
       it 'performs the mapping and returns a new instance' do
         expect(mapper_registry).to receive(:find).and_return(mapper)
         expect(mapper).to receive(:map).with(from: bar, to: foo)
-                                       .and_return(double('new-foo'))
+          .and_return(double('new-foo'))
 
         result = Karta.map(from: bar, to: foo)
 
@@ -143,7 +143,7 @@ describe Karta do
       it 'performs the mapping and returns the instance' do
         expect(mapper_registry).to receive(:find).and_return(mapper)
         expect(mapper).to receive(:map!).with(from: bar, to: foo)
-                                        .and_return(foo)
+          .and_return(foo)
 
         result = Karta.map!(from: bar, to: foo)
 
