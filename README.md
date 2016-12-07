@@ -1,5 +1,4 @@
 # Karta
-[![Homepage](http://img.shields.io/badge/home-yardoc.org-blue.svg)](http://yardoc.org)
 [![GitHub](http://img.shields.io/badge/github-samuel02/karta-blue.svg)](http://github.com/samuel02/karta)
 [![Documentation](http://img.shields.io/badge/docs-rdoc.info-blue.svg)](http://rubydoc.org/gems/karta/frames)
 [![Gem Version](https://badge.fury.io/rb/karta.svg)](https://badge.fury.io/rb/karta)
