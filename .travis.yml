@@ -1,7 +1,6 @@
 language: ruby
 rvm:
 - 2.3.1
-- 2.1.0
 script:
   - bundle exec rspec spec
 cache: bundler
