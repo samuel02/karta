@@ -4,6 +4,7 @@
 [![Gem Version](https://badge.fury.io/rb/karta.svg)](https://badge.fury.io/rb/karta)
 [![Build Status](https://travis-ci.org/samuel02/karta.svg?branch=master)](https://travis-ci.org/samuel02/karta)
 [![Code Climate](https://codeclimate.com/github/samuel02/karta/badges/gpa.svg)](https://codeclimate.com/github/samuel02/karta)
+[![Test Coverage](https://codeclimate.com/github/samuel02/karta/badges/coverage.svg)](https://codeclimate.com/github/samuel02/karta/coverage)
 [![License](http://img.shields.io/badge/license-MIT-yellowgreen.svg)](#license)
 
 Karta is a very light-weight Ruby library that makes it easy to create mapper objects in a Ruby application. The mapper object makes it easy to map or transform one object into an other. The main use case is to transform data objects from an domain to another domain, e.g. map a `Twitter::User` to `User`. Instead of having to, for example, define a method `#from_twitter_user` on the `User` class which sets all attributes correctly a mapper object is created which defines all mappings.
