@@ -43,9 +43,14 @@ module Karta
     #
     # A one-to-one-mapping is a mapping where the attribute names are equal
     # and no transformation is supposed to take place. E.g. `foo.id = bar.id`.
-    def self.one_to_one_mapping(attr)
-      define_method("map_#{attr}") do |from, to|
-        to.send("#{attr}=", from.send(attr))
+    #
+    # @overload one_to_one_mapping(attr, ...)
+    #   @param attr [Symbol] attribute to define a one-to-one mapping for
+    def self.one_to_one_mapping(*attrs)
+      attrs.each do |attr|
+        define_method("map_#{attr}") do |from, to|
+          to.send("#{attr}=", from.send(attr))
+        end
       end
     end
 

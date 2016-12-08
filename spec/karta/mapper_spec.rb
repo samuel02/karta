@@ -103,14 +103,30 @@ describe Karta::Mapper do
   end
 
   describe '.one_to_one_mapping' do
-    let(:mapper) do
-      define_klass 'Foo', base: Karta::Mapper do
-        one_to_one_mapping :foo
-      end.new
+
+
+    context 'when defining a single one to one mapping' do
+      let(:mapper) do
+        define_klass 'Foo', base: Karta::Mapper do
+          one_to_one_mapping :foo
+        end.new
+      end
+
+      it 'defines a mapping method on the instance' do
+        expect(mapper).to respond_to :map_foo
+      end
     end
 
-    it 'defines a mapping method on the instance' do
-      expect(mapper).to respond_to :map_foo
+    context 'when defining many one to one mappings' do
+      let(:mapper) do
+        define_klass 'Foo', base: Karta::Mapper do
+          one_to_one_mapping :foo, :bar
+        end.new
+      end
+
+      it 'defines a mapping method on the instance' do
+        expect(mapper).to respond_to :map_foo, :map_bar
+      end
     end
   end
 
