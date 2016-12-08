@@ -38,10 +38,7 @@ module Karta
   #
   # @return [Object] a new instance of the same type as `to`
   def self.map(from:, to:)
-    to, to_klass, from, from_klass = *_handle_map_args(from, to)
-
-    mapper_registry.find(from_klass: from_klass, to_klass: to_klass)
-                   .map(from: from, to: to)
+    _map(from, to, :map)
   end
 
   # Map an object to another using a registered mapper. Performs the mapping
@@ -54,10 +51,15 @@ module Karta
   #
   # @return [Object] returns modified version of 'to'
   def self.map!(from:, to:)
+    _map(from, to, :map!)
+  end
+
+  # @api private
+  def self._map(from, to, map_method)
     to, to_klass, from, from_klass = *_handle_map_args(from, to)
 
     mapper_registry.find(from_klass: from_klass, to_klass: to_klass)
-                   .map!(from: from, to: to)
+                   .send(map_method, from: from, to: to)
   end
 
   # @api private
